@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -8,6 +9,7 @@ const Contact = () => {
     const sectionRef = useRef(null);
     const infoRef = useRef(null);
     const formRef = useRef(null);
+    const [state, handleSubmit] = useForm("mdawyeqw");
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -100,36 +102,82 @@ const Contact = () => {
 
                     <div className="lg:w-1/2 w-full">
                         <div ref={formRef} className="bg-white/[0.02] border border-white/5 p-12 rounded-[3rem] shadow-2xl relative overflow-hidden backdrop-blur-sm">
-                            <form className="relative z-10 space-y-8">
-                                <div>
-                                    <label className="block text-[10px] font-black text-gray-600 mb-3 uppercase tracking-[0.2em]">Full Name</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter your name"
-                                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-cyan-400/50 transition-all font-medium"
-                                    />
+                            {state.succeeded ? (
+                                <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
+                                    <div className="w-20 h-20 bg-cyan-400/10 border border-cyan-400/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <svg className="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                                    <p className="text-gray-400 mb-8 font-medium">Thank you for reaching out. I'll <span className="text-cyan-400">contact soon to you</span>.</p>
+                                    <button 
+                                        onClick={() => window.location.reload()}
+                                        className="text-cyan-400 font-bold hover:underline"
+                                    >
+                                        Send another message
+                                    </button>
                                 </div>
-                                <div>
-                                    <label className="block text-[10px] font-black text-gray-600 mb-3 uppercase tracking-[0.2em]">Email</label>
-                                    <input
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-cyan-400/50 transition-all font-medium"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-[10px] font-black text-gray-600 mb-3 uppercase tracking-[0.2em]">Message</label>
-                                    <textarea
-                                        rows="5"
-                                        placeholder="Write something..."
-                                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-cyan-400/50 transition-all font-medium resize-none"
-                                    ></textarea>
-                                </div>
+                            ) : (
+                                <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
+                                    <div>
+                                        <label className="block text-[10px] font-black text-gray-600 mb-3 uppercase tracking-[0.2em]">Full Name</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            id="full-name"
+                                            placeholder="Enter your name"
+                                            required
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-cyan-400/50 transition-all font-medium"
+                                        />
+                                        <ValidationError 
+                                            prefix="Name" 
+                                            field="name"
+                                            errors={state.errors}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-gray-600 mb-3 uppercase tracking-[0.2em]">Email</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            placeholder="Enter your email"
+                                            required
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-cyan-400/50 transition-all font-medium"
+                                        />
+                                        <ValidationError 
+                                            prefix="Email" 
+                                            field="email"
+                                            errors={state.errors}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-gray-600 mb-3 uppercase tracking-[0.2em]">Message</label>
+                                        <textarea
+                                            rows="5"
+                                            name="message"
+                                            id="message"
+                                            placeholder="Write something..."
+                                            required
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-cyan-400/50 transition-all font-medium resize-none"
+                                        ></textarea>
+                                        <ValidationError 
+                                            prefix="Message" 
+                                            field="message"
+                                            errors={state.errors}
+                                        />
+                                    </div>
 
-                                <button className="w-full bg-white text-black font-black py-5 rounded-2xl hover:bg-cyan-400 transition-all tracking-widest uppercase text-sm shadow-xl shadow-cyan-400/5">
-                                    Send Message
-                                </button>
-                            </form>
+                                    <button 
+                                        type="submit"
+                                        disabled={state.submitting}
+                                        className="w-full bg-white text-black font-black py-5 rounded-2xl hover:bg-cyan-400 transition-all tracking-widest uppercase text-sm shadow-xl shadow-cyan-400/5 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {state.submitting ? 'Sending...' : 'Send Message'}
+                                    </button>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>
