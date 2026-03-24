@@ -18,16 +18,16 @@ const Projects = () => {
             image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/v1773736813/legdercoreimg_g8o3yp.jpg'
         },
         {
-            name: 'My Ether Wallet Clone',
-            description: 'A frontend clone inspired by MyEtherWallet, developed using HTML and CSS, replicating its clean layout, wallet interface sections, and modern design while emphasizing responsive structure and a user-friendly cryptocurrency dashboard experience.',
-            tech: ['HTML', 'CSS'],
-            repo: 'https://github.com/Vachhani-Tapan/Website_Clones/tree/main/myetherwallet',
-            demo: 'https://myetherwalletclone.netlify.app/',
-            image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/v1773736872/etherwalleticon_zh065p.jpg'
+            name: 'FinWise AI',
+            description: 'AI-powered personal finance system that analyzes spending, investments, and goals to deliver personalized insights, smart recommendations, alerts, and dynamic planning for improved financial health and future goal achievement.',
+            tech: ['React', 'Node.js', 'MongoDB'],
+            repo: 'https://github.com/Vachhani-Tapan/finwiseai-1',
+            demo: 'https://finwiseai-1-yvg4.vercel.app/login',
+            image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/v1774370854/finwisescreenshot_vflxu5.jpg'
         },
         {
             name: 'Udaan Website Clone',
-            description: 'A frontend clone inspired by the Udaan website, built using HTML and CSS, recreating its business marketplace layout, product listing sections, and structured design while focusing on responsiveness and a clean user interface.',
+            description: 'A frontend clone inspired by the Udaan website, built using HTML and CSS, recreating its business marketplace layout and structured design.',
             tech: ['HTML', 'CSS'],
             repo: 'https://github.com/Vachhani-Tapan/Website_Clones/tree/main/Udaan',
             demo: 'https://udaanwebclone.netlify.app/',
@@ -35,7 +35,7 @@ const Projects = () => {
         },
         {
             name: 'Urban Monkey Clone',
-            description: 'A frontend clone inspired by the Urban Monkey website built using HTML and CSS, recreating its modern layout, product sections, and stylish design while focusing on responsive structure and clean user interface elements.',
+            description: 'A frontend clone inspired by the Urban Monkey website built using HTML and CSS, recreating its modern layout and stylish design.',
             tech: ['HTML', 'CSS'],
             repo: 'https://github.com/Vachhani-Tapan/Website_Clones/tree/main/urbanmonkey',
             demo: 'https://urbanmonkeyclone1.netlify.app/',
@@ -43,27 +43,35 @@ const Projects = () => {
         },
         {
             name: 'DataBricks Clone',
-            description: 'A responsive Databricks-inspired frontend clone built using HTML and CSS, replicating the platform’s layout and UI components. Focuses on clean design, structured sections, and responsive styling to simulate a modern data platform interface.',
+            description: 'A responsive Databricks-inspired frontend clone built using HTML and CSS, replicating the platforms layout and UI components.',
             tech: ['HTML', 'CSS'],
             repo: 'https://github.com/Vachhani-Tapan/Website_Clones/tree/main/Databricks',
             demo: 'https://databricksclone.netlify.app/',
             image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/v1773737037/databrickicon_vsh4ow.jpg'
+        },
+        {
+            name: 'My Ether Wallet Clone',
+            description: 'A frontend clone inspired by MyEtherWallet, developed using HTML and CSS, replicating its clean layout, wallet interface sections, and modern design.',
+            tech: ['HTML', 'CSS'],
+            repo: 'https://github.com/Vachhani-Tapan/Website_Clones/tree/main/myetherwallet',
+            demo: 'https://myetherwalletclone.netlify.app/',
+            image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/v1773736872/etherwalleticon_zh065p.jpg'
         }
     ];
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             if (gridRef.current && gridRef.current.children) {
-                gsap.set(gridRef.current.children, { opacity: 0, y: 100 });
+                gsap.set(gridRef.current.children, { opacity: 0, y: 80 });
                 gsap.to(gridRef.current.children, {
                     scrollTrigger: {
                         trigger: gridRef.current,
-                        start: 'top 80%',
+                        start: 'top 85%',
                     },
                     y: 0,
                     opacity: 1,
-                    duration: 1.2,
-                    stagger: 0.3,
+                    duration: 1,
+                    stagger: 0.15,
                     ease: 'power4.out',
                     overwrite: 'auto'
                 });
@@ -85,44 +93,63 @@ const Projects = () => {
                         <h2 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Featured <span className="text-cyan-400">Projects</span></h2>
                         <p className="text-gray-500 font-medium">Pushing boundaries with code and creativity.</p>
                     </div>
-                    <a href="https://github.com" target="_blank" className="text-cyan-400 hover:underline font-black text-sm tracking-widest uppercase">View All &rarr;</a>
+                    <a href="https://github.com/Vachhani-Tapan" target="_blank" className="text-cyan-400 hover:underline font-black text-sm tracking-widest uppercase">View All &rarr;</a>
                 </div>
 
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {projects.map((project, idx) => (
-                        <div key={idx} className="group bg-white/[0.02] rounded-[2.5rem] overflow-hidden border border-white/5 transition-all duration-700 hover:border-cyan-400/30">
-                            <div className="h-64 bg-white/[0.03] relative overflow-hidden">
-                                <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors duration-700 z-10"></div>
+                        <div
+                            key={idx}
+                            className="group bg-white/[0.03] overflow-hidden border border-white/[0.06] rounded-lg transition-all duration-500 hover:border-cyan-400/40 hover:bg-white/[0.05]"
+                        >
+                            {/* Image */}
+                            <div className="aspect-[16/10] relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 {project.image ? (
-                                    <img 
-                                        src={project.image} 
-                                        alt={project.name} 
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    <img
+                                        src={project.image}
+                                        alt={project.name}
+                                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                        loading="lazy"
                                     />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <span className="text-7xl opacity-10 group-hover:opacity-30 transition-all duration-700 transform group-hover:scale-110">📁</span>
+                                    <div className="w-full h-full flex items-center justify-center bg-white/[0.02]">
+                                        <span className="text-5xl opacity-10 group-hover:opacity-30 transition-all duration-500">📁</span>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="p-10">
-                                <div className="flex flex-wrap gap-2 mb-6">
+                            {/* Content */}
+                            <div className="p-5">
+                                {/* Tech Tags */}
+                                <div className="flex flex-wrap gap-2 mb-4">
                                     {project.tech.map((t) => (
-                                        <span key={t} className="text-[10px] uppercase font-black tracking-widest text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full">
+                                        <span key={t} className="text-[10px] uppercase font-bold tracking-widest text-cyan-400 bg-cyan-400/10 px-2.5 py-0.5 rounded-sm border border-cyan-400/20">
                                             {t}
                                         </span>
                                     ))}
                                 </div>
 
-                                <h3 className="text-3xl font-black text-white mb-4 group-hover:text-cyan-400 transition-colors uppercase tracking-tight">{project.name}</h3>
-                                <p className="text-gray-500 mb-8 line-clamp-2 text-lg font-medium">{project.description}</p>
+                                {/* Title */}
+                                <h3 className="text-lg font-black text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300 uppercase tracking-tight leading-tight">{project.name}</h3>
 
-                                <div className="flex gap-6">
-                                    <a href={project.repo} className="text-sm font-black uppercase tracking-widest text-white border-b-2 border-white/10 hover:border-cyan-400 transition-all pb-1">
-                                        Repository
+                                {/* Description */}
+                                <p className="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed">{project.description}</p>
+
+                                {/* Links */}
+                                <div className="flex gap-5 pt-3 border-t border-white/[0.06]">
+                                    <a href={project.repo} target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 flex items-center gap-1.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                                        </svg>
+                                        Repo
                                     </a>
-                                    <a href={project.demo} className="text-sm font-black uppercase tracking-widest text-cyan-400 border-b-2 border-transparent hover:border-cyan-400 transition-all pb-1">
+                                    <a href={project.demo} target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest text-cyan-400 hover:text-cyan-300 transition-colors duration-300 flex items-center gap-1.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                            <polyline points="15 3 21 3 21 9"/>
+                                            <line x1="10" y1="14" x2="21" y2="3"/>
+                                        </svg>
                                         Live Demo
                                     </a>
                                 </div>
