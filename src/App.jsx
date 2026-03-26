@@ -8,7 +8,7 @@ import Projects from './components/Projects';
 // import Profiles from './components/Profiles';
 import Education from './components/Education';
 import Contact from './components/Contact';
-import Footer from './components/Footer';
+
 import InteractiveBackground from './components/InteractiveBackground';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
@@ -37,7 +37,7 @@ function App() {
             <Contact />
           </ScrollReveal>
         </main>
-        <Footer />
+
       </div>
     </SmoothScroll>
   );
