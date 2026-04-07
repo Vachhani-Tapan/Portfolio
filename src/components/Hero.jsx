@@ -62,7 +62,7 @@ const Hero = () => {
                                 {social.icon}
                             </a>
                         ))}
-                        <a href="https://drive.google.com/file/d/18RrvHP-lHyQRebR6mfRuBX7g4uITX_vO/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-2 px-6 py-2 md:py-3 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-emerald-400/10 hover:border-emerald-400/50 transition-all duration-300 socials-link h-12 md:h-14">
+                        <a href="https://drive.google.com/file/d/1tBm9eV-b0_5wTDLnC8z89lylPLmqVRTs/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-2 px-6 py-2 md:py-3 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-emerald-400/10 hover:border-emerald-400/50 transition-all duration-300 socials-link h-12 md:h-14">
                             <span className="font-bold tracking-widest uppercase text-white group-hover:text-emerald-400 text-xs md:text-sm transition-colors">
                                 View Resume
                             </span>
