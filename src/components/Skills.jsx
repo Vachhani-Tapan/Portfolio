@@ -1,190 +1,315 @@
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useEffect, useRef, useCallback } from 'react';
+import Globe from 'react-globe.gl';
+import * as THREE from 'three';
 
-gsap.registerPlugin(ScrollTrigger);
+/*
+  Skills section:
+  - Fully BLACK globe (no white parts) with skill logos rotating on it
+  - Auto-rotating slowly
+  - Hover effect: logo scales up + tooltip with skill name
+  - Only skills from the left pills
+*/
+
+/*
+  Fibonacci sphere distribution for evenly spacing logos
+*/
+const distributeSkills = (logos) => {
+  const n = logos.length;
+  const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle
+  return logos.map((logo, i) => {
+    // Avoid exact poles by clamping Y
+    let y = 1 - (i / (n - 1)) * 2;
+    y *= 0.85; 
+    const radius = Math.sqrt(1 - y * y);
+    const theta = phi * i;
+    
+    const lat = Math.asin(y) * (180 / Math.PI);
+    const lng = Math.atan2(Math.sin(theta) * radius, Math.cos(theta) * radius) * (180 / Math.PI);
+    
+    return { ...logo, lat, lng };
+  });
+};
+
+const skillLogos = distributeSkills([
+  { name: 'HTML5', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', size: 34 },
+  { name: 'CSS3', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', size: 34 },
+  { name: 'JavaScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', size: 32 },
+  { name: 'React.js', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', size: 36 },
+  { name: 'Tailwind CSS', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg', size: 32 },
+  { name: 'Node.js', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', size: 36 },
+  { name: 'Express', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', size: 30 },
+  { name: 'MongoDB', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', size: 32 },
+  { name: 'Redis', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg', size: 32 },
+  { name: 'Netlify', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/netlify/netlify-original.svg', size: 30 },
+  { name: 'Vercel', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg', size: 30, invert: true },
+  { name: 'Render', img: 'https://cdn.simpleicons.org/render', size: 30, invert: true },
+  { name: 'Git', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', size: 30 },
+  { name: 'GitHub', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', size: 32, invert: true },
+  { name: 'Vite', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg', size: 30 },
+  { name: 'VS Code', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', size: 30 },
+  { name: 'Figma', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', size: 28 },
+  { name: 'Postman', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg', size: 30 },
+]);
+
+const GLOBE_SIZE = 520;
 
 const Skills = () => {
-    const sectionRef = useRef(null);
-    const gridRef = useRef(null);
+  const globeRef = useRef(null);
+  const globeMatRef = useRef(null);
 
-    // Default to the first skill
-    const defaultSkill = {
-        name: 'C++',
-        desc: 'High-performance application development, system programming, and competitive coding.',
-        img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg'
-    };
-    const [selectedSkill, setSelectedSkill] = React.useState(defaultSkill);
+  const reqRef = useRef(null);
 
-    const categories = [
-        {
-            title: 'Programming',
-            skills: [
-                { name: 'C', desc: 'Foundational programming and algorithmic problem solving.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg' },
-                { name: 'C++', desc: 'High-performance application development, system programming, and competitive coding.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg' },
-                { name: 'JavaScript', desc: 'Modern ES6+ syntax, asynchronous programming, and DOM manipulation.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
-            ]
-        },
-        {
-            title: 'Web Dev',
-            skills: [
-                { name: 'HTML', desc: 'The standard markup language for documents designed to be displayed in a web browser.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-                { name: 'CSS', desc: 'Style sheet language used for describing the presentation of a document written in HTML.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
-                { name: 'JavaScript', desc: 'Modern ES6+ syntax, asynchronous programming, and DOM manipulation.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
-                { name: 'Node.js', desc: 'Server-side JavaScript runtime for building scalable network applications.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
-                { name: 'Express', desc: 'Fast, unopinionated, minimalist web framework for Node.js.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg' },
-                { name: 'React', desc: 'Building dynamic, component-based user interfaces with Hooks and Context API.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
-                { name: 'Tailwind', desc: 'Utility-first CSS framework for rapid UI development and custom designs.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' }
-            ]
-        },
-        {
-            title: 'Tools',
-            skills: [
-                { name: 'Git', desc: 'Distributed version control system for tracking changes and collaboration.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
-                { name: 'GitHub', desc: 'Hosting service for version control and collaboration.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
-                { name: 'VS Code', desc: 'Powerful code editor with extensive extension ecosystem.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
-                { name: 'Postman', desc: 'API platform for building and using APIs.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg' }
-            ]
-        },
-        {
-            title: 'Databases',
-            skills: [
-                { name: 'MongoDB', desc: 'NoSQL database for flexible JSON-like data storage and rapid iteration.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
-                { name: 'Redis', desc: 'In-memory data structure store, used as a database, cache, and message broker.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg' }
-            ]
-        },
-        {
-            title: 'Deployment',
-            skills: [
-                { name: 'Netlify', desc: 'Platform for automating modern web projects recommended for static sites.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/netlify/netlify-original.svg' },
-                { name: 'Vercel', desc: 'Cloud platform for static sites and Serverless component deployment.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg' },
-                { name: 'Render', desc: 'Unified cloud to build and run all your apps and websites.', img: 'https://cdn.simpleicons.org/render/white' },
-            ]
-        },
-        {
-            title: 'Design',
-            skills: [
-                { name: 'Figma', desc: 'Interface design tool for vector graphics and prototyping.', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg' }
-            ]
-        }
-    ];
+  useEffect(() => {
+    if (!globeRef.current) return;
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            if (gridRef.current && gridRef.current.children) {
-                gsap.set(gridRef.current.children, { opacity: 0, y: 60 }); // Ensure initial state
-                gsap.to(gridRef.current.children, {
-                    scrollTrigger: {
-                        trigger: gridRef.current,
-                        start: 'top 85%',
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 1,
-                    stagger: 0.1,
-                    ease: 'back.out(1.7)',
-                    overwrite: 'auto' // Prevent conflict
-                });
+    // Auto-rotate slowly
+    const controls = globeRef.current.controls();
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.6;
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.minDistance = 400;
+    controls.maxDistance = 400;
+
+    globeRef.current.pointOfView({ lat: 15, lng: 0, altitude: 2.2 });
+
+    // Make the globe fully BLACK — override the globe material
+    const globeObj = globeRef.current;
+    // Wait for globe to initialize then override material
+    setTimeout(() => {
+      try {
+        const scene = globeObj.scene();
+        scene.traverse((obj) => {
+          if (obj.isMesh && obj.geometry && obj.geometry.type === 'SphereGeometry') {
+            // Replace with dark material — black globe with subtle grid lines
+            obj.material = new THREE.MeshPhongMaterial({
+              color: new THREE.Color('#111111'),
+              emissive: new THREE.Color('#0a0a0a'),
+              shininess: 5,
+              transparent: true,
+              opacity: 0.92,
+              wireframe: false,
+            });
+            globeMatRef.current = obj.material;
+          }
+        });
+
+        // Add a subtle wireframe overlay for the mesh look
+        const globeMesh = scene.children.find(c =>
+          c.type === 'Group' || c.type === 'Object3D'
+        );
+        if (globeMesh) {
+          globeMesh.traverse((obj) => {
+            if (obj.isMesh && obj.geometry && obj.geometry.type === 'SphereGeometry') {
+              const wireGeo = obj.geometry.clone();
+              const wireMat = new THREE.MeshBasicMaterial({
+                color: new THREE.Color('#222222'),
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15,
+              });
+              const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+              wireMesh.scale.copy(obj.scale).multiplyScalar(1.002);
+              obj.parent.add(wireMesh);
             }
-        }, sectionRef);
+          });
+        }
+      } catch (e) {
+        console.log('Globe material override skipped:', e);
+      }
+    }, 1000);
 
-        return () => ctx.revert();
-    }, []);
+    // Visibility update loop
+    const updateVisibility = () => {
+      if (globeRef.current) {
+        const camera = globeRef.current.camera();
+        const wrappers = document.querySelectorAll('.skill-logo-wrapper');
+        
+        wrappers.forEach(wrapper => {
+          const lat = parseFloat(wrapper.dataset.lat);
+          const lng = parseFloat(wrapper.dataset.lng);
+          const coords = globeRef.current.getCoords(lat, lng, 0);
+          
+          if (coords && camera) {
+            const camVec = new THREE.Vector3().copy(camera.position).normalize();
+            const ptVec = new THREE.Vector3(coords.x, coords.y, coords.z).normalize();
+            const dot = camVec.dot(ptVec);
+            
+            if (dot < 0.25) {
+              const opacity = Math.max(0, dot * 4);
+              wrapper.style.opacity = opacity.toString();
+              wrapper.style.pointerEvents = opacity > 0.05 ? 'auto' : 'none';
+            } else {
+              wrapper.style.opacity = '1';
+              wrapper.style.pointerEvents = 'auto';
+            }
+          }
+        });
+      }
+      reqRef.current = requestAnimationFrame(updateVisibility);
+    };
 
-    return (
-        <section ref={sectionRef} id="skills" className="py-24 relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-left mb-16">
-                    <h2 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Technical <span className="text-cyan-400">Skills</span></h2>
-                    <div className="w-24 h-1 bg-cyan-400 rounded-full"></div>
-                </div>
+    reqRef.current = requestAnimationFrame(updateVisibility);
 
-                <div className="flex flex-col lg:flex-row gap-12 items-start">
-                    {/* Skills Grid - LEFT SIDE */}
-                    <div ref={gridRef} className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                        {categories.map((category) => (
-                            <div key={category.title} className="bg-white/5 border border-white/10 p-6 rounded-3xl hover:border-cyan-400/50 hover:bg-white/10 transition-all duration-300 group h-full flex flex-col shadow-lg backdrop-blur-sm">
-                                <h3 className="text-lg font-bold text-white mb-6 flex items-center group-hover:text-cyan-400 transition-colors">
-                                    <span className="w-8 h-8 bg-cyan-400/10 text-cyan-400 rounded-lg flex items-center justify-center mr-3 font-mono text-xs uppercase">
-                                        {category.icon}
-                                    </span>
-                                    {category.title}
-                                </h3>
+    return () => {
+      if (reqRef.current) {
+        cancelAnimationFrame(reqRef.current);
+      }
+    };
+  }, []);
 
-                                <div className="grid grid-cols-4 gap-3">
-                                    {category.skills.map((skill) => (
-                                        <button
-                                            key={skill.name}
-                                            onClick={() => setSelectedSkill(skill)}
-                                            className={`flex flex-col items-center justify-center p-2 rounded-xl border transition-all duration-300 group/skill aspect-square ${selectedSkill?.name === skill.name
-                                                ? 'bg-cyan-400/20 border-cyan-400 scale-105 shadow-xl shadow-cyan-400/20'
-                                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-cyan-400/50 hover:scale-105'
-                                                }`}
-                                            title={skill.name}
-                                        >
-                                            <div className="w-8 h-8 mb-2 flex items-center justify-center">
-                                                <img
-                                                    src={skill.img}
-                                                    alt={skill.name}
-                                                    className={`w-full h-full object-contain filter transition-all duration-300 ${(skill.name === 'Express' || skill.name === 'GitHub' || skill.name === 'Vercel' || skill.name === 'Next.js' || skill.name === 'Render' || skill.name === 'Unix' || skill.name === 'Bash')
-                                                        ? 'invert opacity-80 group-hover/skill:opacity-100'
-                                                        : ''
-                                                        }`}
-                                                />
-                                            </div>
-                                            <span className={`text-[10px] font-bold text-center truncate w-full ${selectedSkill?.name === skill.name ? 'text-cyan-400' : 'text-gray-500 group-hover/skill:text-gray-300'
-                                                }`}>
-                                                {skill.name}
-                                            </span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+  const frontendSkills = ["HTML5", "CSS3", "JavaScript", "React.js", "Tailwind CSS", "Framer Motion"];
+  const backendSkills = ["Node.js", "Express", "MongoDB", "Redis", "REST API"];
+  const tools = ["Git", "GitHub", "Vite", "VS Code", "Figma", "Postman", "Netlify", "Vercel", "Render"];
 
-                    {/* Details Panel - RIGHT SIDE (Sticky) */}
-                    <div className="lg:w-1/3 w-full lg:sticky lg:top-32">
-                        <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-800 p-8 rounded-3xl min-h-[400px] flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
-                            {/* Background Glow */}
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-cyan-400/20 blur-[100px] rounded-full pointer-events-none"></div>
+  const renderSkillPills = (skills) => (
+    <div className="flex flex-wrap gap-2 md:gap-3 lg:pr-10">
+      {skills.map((skill, index) => (
+        <span
+          key={index}
+          className="px-4 py-2 border border-white/10 rounded-full font-medium text-sm text-gray-300 bg-[#161616]/50 backdrop-blur-md hover:bg-white hover:text-black transition-all cursor-crosshair delay-75 ease-out duration-300 translate-y-0 hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(255,255,255,0.3)]"
+        >
+          {skill}
+        </span>
+      ))}
+    </div>
+  );
 
-                            <div className="mb-8 relative z-10">
-                                <span className="text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase border border-cyan-400/30 px-3 py-1 rounded-full">Skill Details</span>
-                            </div>
+  /* Logo renderer with proper HOVER effect — tooltip + scale */
+  const labelRenderer = useCallback((d) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'skill-logo-wrapper';
+    wrapper.dataset.lat = d.lat;
+    wrapper.dataset.lng = d.lng;
+    wrapper.style.cssText = `
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.1s ease;
+    `;
 
-                            {selectedSkill ? (
-                                <div className="animate-fade-in w-full flex flex-col items-center relative z-10">
-                                    <div className="w-28 h-28 bg-white/5 rounded-3xl p-6 mb-6 ring-1 ring-white/10 shadow-lg flex items-center justify-center">
-                                        <img
-                                            src={selectedSkill.img}
-                                            alt={selectedSkill.name}
-                                            className={`w-full h-full object-contain filter drop-shadow-lg ${(selectedSkill.name === 'Express' || selectedSkill.name === 'GitHub' || selectedSkill.name === 'Vercel' || selectedSkill.name === 'Next.js' || selectedSkill.name === 'Render' || selectedSkill.name === 'Unix' || selectedSkill.name === 'Bash')
-                                                ? 'invert'
-                                                : ''
-                                                }`}
-                                        />
-                                    </div>
+    // Logo image
+    const img = document.createElement('img');
+    img.src = d.img;
+    img.alt = d.name;
+    img.width = d.size;
+    img.height = d.size;
+    img.draggable = false;
+    img.style.cssText = `
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)) ${d.invert ? 'invert(1)' : ''};
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    `;
 
-                                    <h3 className="text-4xl font-black text-white mb-4 tracking-tight">{selectedSkill.name}</h3>
+    // Tooltip — hidden by default, shows on hover
+    const tooltip = document.createElement('div');
+    tooltip.textContent = d.name;
+    tooltip.style.cssText = `
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.8);
+      background: rgba(255, 255, 255, 0.95);
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    `;
 
-                                    <div className="w-full bg-white/5 rounded-2xl p-6 border border-white/5 text-left">
-                                        <p className="text-gray-300 text-lg leading-relaxed">
-                                            {selectedSkill.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="text-gray-500 italic">
-                                    Select a skill to view details
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+    // Arrow for tooltip
+    const arrow = document.createElement('div');
+    arrow.style.cssText = `
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.95);
+    `;
+    tooltip.appendChild(arrow);
+
+    wrapper.appendChild(tooltip);
+    wrapper.appendChild(img);
+
+    // Hover events
+    wrapper.addEventListener('mouseenter', () => {
+      img.style.transform = 'scale(1.35)';
+      img.style.filter = `drop-shadow(0 0 14px rgba(255,255,255,0.6)) ${d.invert ? 'invert(1)' : ''}`;
+      tooltip.style.opacity = '1';
+      tooltip.style.transform = 'translateX(-50%) scale(1)';
+    });
+    wrapper.addEventListener('mouseleave', () => {
+      img.style.transform = 'scale(1)';
+      img.style.filter = `drop-shadow(0 0 8px rgba(255,255,255,0.3)) ${d.invert ? 'invert(1)' : ''}`;
+      tooltip.style.opacity = '0';
+      tooltip.style.transform = 'translateX(-50%) scale(0.8)';
+    });
+
+    return wrapper;
+  }, []);
+
+  return (
+    <div className="w-full relative min-h-[600px] flex flex-col md:flex-row items-center border border-white/10 rounded-[40px] bg-[#0E0E0E] overflow-hidden p-8 md:p-12 z-0">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0,_#000_100%)] opacity-20 pointer-events-none" />
+
+      {/* ── Left: Skill pills ── */}
+      <div className="w-full md:w-1/2 flex flex-col z-10 space-y-8">
+        <div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">My Skills.</h2>
+          <p className="text-gray-400 text-sm">Technologies I use to bring ideas to life</p>
+          <div className="w-24 h-[1px] bg-gradient-to-r from-white/20 to-transparent mt-6 mb-2" />
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold tracking-widest text-[#666] uppercase mb-4">Frontend</h3>
+          {renderSkillPills(frontendSkills)}
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold tracking-widest text-[#666] uppercase mb-4">Backend</h3>
+          {renderSkillPills(backendSkills)}
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold tracking-widest text-[#666] uppercase mb-4">Tools</h3>
+          {renderSkillPills(tools)}
+        </div>
+      </div>
+
+      {/* ── Right: BLACK globe with skill logos ── */}
+      <div
+        className="w-full md:w-1/2 flex justify-center items-center mt-12 md:mt-0 z-10"
+        style={{ height: `${GLOBE_SIZE}px`, minHeight: `${GLOBE_SIZE}px` }}
+      >
+        <div style={{ width: `${GLOBE_SIZE}px`, height: `${GLOBE_SIZE}px`, flexShrink: 0 }}>
+          <Globe
+            ref={globeRef}
+            width={GLOBE_SIZE}
+            height={GLOBE_SIZE}
+            backgroundColor="rgba(0,0,0,0)"
+            globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+            atmosphereColor="#333333"
+            atmosphereAltitude={0.12}
+            htmlElementsData={skillLogos}
+            htmlLat="lat"
+            htmlLng="lng"
+            htmlAltitude={0.12}
+            htmlElement={labelRenderer}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Skills;

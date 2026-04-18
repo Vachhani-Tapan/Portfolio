@@ -1,0 +1,106 @@
+/* =============================================
+   LoadingScreen – styles
+   ============================================= */
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--loader-bg, #0a0a0a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Top-left label ── */
+.loading-label {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 0.75rem;
+  color: var(--loader-muted, #888888);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+@media (min-width: 768px) {
+  .loading-label {
+    top: 3rem;
+    left: 3rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* ── Center rotating words ── */
+.loading-words-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-word {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 3rem;     /* increased from 2.25rem */
+  color: rgba(245, 245, 245, 0.8);
+  position: absolute;
+}
+
+@media (min-width: 768px) {
+  .loading-word {
+    font-size: 5rem;   /* increased from 3.75rem */
+  }
+}
+
+@media (min-width: 1024px) {
+  .loading-word {
+    font-size: 6.5rem;    /* increased from 4.5rem */
+  }
+}
+
+/* ── Bottom-right counter ── */
+.loading-counter {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 5rem;    /* increased from 3.75rem */
+  color: var(--loader-text, #f5f5f5);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+@media (min-width: 768px) {
+  .loading-counter {
+    bottom: 3rem;
+    right: 3rem;
+    font-size: 8rem;      /* increased from 6rem */
+  }
+}
+
+@media (min-width: 1024px) {
+  .loading-counter {
+    font-size: 10rem;      /* increased from 8rem */
+  }
+}
+
+/* ── Bottom progress bar ── */
+.loading-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(31, 31, 31, 0.5);
+}
+
+.loading-progress-fill {
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
+  box-shadow: 0 0 8px rgba(137, 170, 204, 0.35);
+}
