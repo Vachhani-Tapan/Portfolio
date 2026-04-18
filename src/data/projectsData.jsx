@@ -30,14 +30,14 @@ const projectsData = [
       'Support flexible approval rules',
     ],
     tags: [
-      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" className="w-3.5 h-3.5" alt="React.js" />, label: 'React.js' },
-      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" className="w-3.5 h-3.5" alt="Firebase" />, label: 'Firebase' },
-      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" className="w-3.5 h-3.5" alt="Tailwind CSS" />, label: 'Tailwind CSS' },
-      { icon: <img src="https://cdn.simpleicons.org/openai/white" className="w-3.5 h-3.5" alt="OpenAI API" />, label: 'OpenAI API' },
+      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" className="w-3.5 h-3.5" alt="HTML" />, label: 'HTML' },
+      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" className="w-3.5 h-3.5" alt="CSS" />, label: 'CSS' },
+      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" className="w-3.5 h-3.5" alt="JavaScript" />, label: 'JavaScript' },
+      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" className="w-3.5 h-3.5" alt="MongoDB" />, label: 'MongoDB' },
     ],
-    image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/v1774370854/finwisescreenshot_vflxu5.jpg',
+    image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/q_auto/f_auto/v1776517876/download_ewfxqz.png',
     github: 'https://github.com/Vachhani-Tapan/Exp',
-    live: '#',
+    live: 'https://expense-management-ledgercore.netlify.app/',
   },
   {
     title: 'LearnSmart AI',
@@ -47,13 +47,11 @@ const projectsData = [
       'Real-time chat with Socket.IO.',
     ],
     tags: [
-      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" className="w-3.5 h-3.5" alt="React.js" />, label: 'React.js' },
-      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" className="w-3.5 h-3.5" alt="Redux Toolkit" />, label: 'Redux Toolkit' },
-      
+      { icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" className="w-3.5 h-3.5" alt="HTML" />, label: 'HTML' },
     ],
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
-    github: '#',
-    live: '#',
+    image: 'https://res.cloudinary.com/dgcmeb8ec/image/upload/q_auto/f_auto/v1776513272/download_kb3yxv.png',
+    github: 'https://github.com/Vachhani-Tapan/ELeaningPath',
+    live: 'https://learn-smart-project.netlify.app/',
   },
   {
     title: 'LedgerCore',

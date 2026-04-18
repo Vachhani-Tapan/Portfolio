@@ -243,7 +243,7 @@ const Projects = () => {
 
       {/* Mobile Layout: Normal vertical stacking like AllProjects.jsx */}
       <div className="mt-8 flex md:hidden flex-col">
-        {projectsData.slice(0, 4).map((project, index) => (
+        {projectsData.slice(0, 3).map((project, index) => (
           <MobileProjectCard
             key={index}
             project={project}
@@ -253,12 +253,12 @@ const Projects = () => {
 
       {/* Desktop/Tablet Layout: Sticky Stacking cards */}
       <div className="mt-12 relative pb-4 md:pb-8 hidden md:block">
-        {projectsData.slice(0, 4).map((project, index) => (
+        {projectsData.slice(0, 3).map((project, index) => (
           <ProjectCard
             key={index}
             project={project}
             index={index}
-            total={4}
+            total={3}
           />
         ))}
       </div>

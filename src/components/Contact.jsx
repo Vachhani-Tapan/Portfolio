@@ -35,6 +35,11 @@ const BentoTiltCard = ({ children, className = '', style = {}, onClick }) => {
   const glowXSpring = useSpring(glowX, { stiffness: 300, damping: 30 });
   const glowYSpring = useSpring(glowY, { stiffness: 300, damping: 30 });
 
+  const {
+    padding, display, flexDirection, alignItems, justifyContent, gap, textAlign, minHeight,
+    ...outerStyle
+  } = style;
+
   return (
     <motion.div
       style={{
@@ -42,7 +47,10 @@ const BentoTiltCard = ({ children, className = '', style = {}, onClick }) => {
         rotateY,
         transformStyle: 'preserve-3d',
         transformPerspective: 1200,
-        ...style,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: minHeight,
+        ...outerStyle,
       }}
       className={`rounded-2xl overflow-hidden border border-white/[0.06] bg-[#111113] shadow-[0_4px_30px_rgba(0,0,0,0.4)] transition-colors duration-300 hover:border-white/[0.12] group relative cursor-pointer ${className}`}
       onMouseMove={handleMouseMove}
@@ -72,7 +80,14 @@ const BentoTiltCard = ({ children, className = '', style = {}, onClick }) => {
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       />
-      <div style={{ transform: 'translateZ(20px)', position: 'relative', zIndex: 1, height: '100%' }}>
+      <div style={{ 
+        transform: 'translateZ(20px)', 
+        position: 'relative', 
+        zIndex: 1, 
+        flex: 1, 
+        width: '100%',
+        padding, display, flexDirection, alignItems, justifyContent, gap, textAlign 
+      }}>
         {children}
       </div>
     </motion.div>
@@ -183,7 +198,7 @@ const Contact = () => {
           ref={(el) => { letterRefs.current[i] = el; }}
           style={{
             display: 'inline-block', position: 'relative', zIndex: 1,
-            fontFamily: "'Inter', sans-serif", fontSize: 'clamp(4.5rem, 10vw, 8rem)',
+            fontFamily: "'Inter', sans-serif", fontSize: 'clamp(2.8rem, 14vw, 8rem)',
             fontWeight: 900, color: color, lineHeight: 0.9, textTransform: 'uppercase',
             transformOrigin: 'center bottom', willChange: 'transform', letterSpacing: '-0.02em',
           }}
@@ -223,7 +238,22 @@ const Contact = () => {
 
   return (
     <div ref={containerRef} className="w-full flex flex-col pb-12 relative max-w-[1200px] mx-auto" style={{ marginTop: '80px' }}>
-
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-bento-grid {
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          .mobile-vertical-card {
+            min-height: 120px !important;
+            padding: 30px 10px !important;
+          }
+          .mobile-horizontal-text {
+            writing-mode: horizontal-tb !important;
+          }
+        }
+      `}</style>
+      
       {/* ── LET'S WORK + Form Row ── */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-8 w-full items-start">
         <div className="flex flex-col lets-work-container select-none">
@@ -279,7 +309,7 @@ const Contact = () => {
         className="mt-24 w-full"
       >
         {/* Bento Grid */}
-        <div style={{
+        <div className="mobile-bento-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 0.6fr) minmax(0, 1.8fr) minmax(0, 1fr)',
           gridTemplateRows: 'auto auto auto',
@@ -368,6 +398,7 @@ const Contact = () => {
 
           {/* ── Row 2-3, Col 1: Vertical Name ── */}
           <BentoTiltCard
+            className="mobile-vertical-card"
             style={{
               gridColumn: '1 / 2', gridRow: '2 / 4',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -379,7 +410,7 @@ const Contact = () => {
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
             </div>
-            <span style={{
+            <span className="mobile-horizontal-text" style={{
               writingMode: 'vertical-rl', textOrientation: 'mixed',
               fontFamily: "'Inter', sans-serif", fontSize: '1.5rem', fontWeight: 900,
               color: '#fff', letterSpacing: '0.25em', textTransform: 'uppercase',
