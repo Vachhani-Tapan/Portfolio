@@ -40,6 +40,8 @@ const HeroCard = () => {
           <img
             src="https://res.cloudinary.com/dgcmeb8ec/image/upload/v1774767368/resize_image_g9upwd.jpg"
             alt="Hero Avatar"
+            loading="eager"
+            fetchpriority="high"
             className="w-full h-full object-cover opacity-90 transition-all duration-700 hover:opacity-100"
             style={{ transform: 'scale(1.3)', objectPosition: 'center 15%' }}
           />
@@ -58,7 +60,7 @@ const HeroCard = () => {
             className="text-[2.5rem] sm:text-[3.2rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem] font-black uppercase tracking-tighter leading-none mb-8 flex items-center flex-wrap"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            <span className="text-gradient drop-shadow-md">TAPAN VACHHANI</span>
+            <span className="text-gradient drop-shadow-md">VACHHANI TAPAN</span>
             <motion.span
               animate={{ opacity: [1, 0, 1] }}
               transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
@@ -150,7 +152,7 @@ const HeroCard = () => {
           </h2>
           <div className="text-gray-400 text-base sm:text-lg md:text-[1.1rem] leading-[1.7] space-y-5">
             <p>
-              I'm Tapan Vachhani, a Computer Science student and aspiring Full-Stack Developer based in India. I enjoy building practical web applications and working across both frontend and backend technologies, with interests in web development, databases, and cloud fundamentals.
+              I'm Vachhani Tapan, a Computer Science student and aspiring Full-Stack Developer based in India. I enjoy building practical web applications and working across both frontend and backend technologies, with interests in web development, databases, and cloud fundamentals.
             </p>
             <p>
               I work with React, JavaScript, Node.js, and MongoDB to turn ideas into functional projects. In my free time, I explore new technologies, play video games, and build personal projects. I'm always open to learning, collaboration, and new opportunities.

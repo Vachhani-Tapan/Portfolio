@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ExternalLink, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Logo from './Logo';
 import projectsData from '../data/projectsData';
 import figmaData from '../data/figmaData';
 import gameData from '../data/gameData';
-import CanvasBackground from './CanvasBackground';
-import CustomCursor from './CustomCursor';
 
 /* ── GitHub SVG icon ── */
 const GithubSvg = () => (
@@ -17,49 +14,14 @@ const GithubSvg = () => (
 );
 
 const AllProjects = () => {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('web');
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleNavigate = (id) => {
-    navigate('/', { state: { scrollTo: id } });
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white relative cursor-none">
-      <CustomCursor />
-      <CanvasBackground />
-
-      {/* ── Navbar ── */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-16 py-2"
-        style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)' }}
-      >
-        <Logo />
-
-        <ul className="hidden md:flex items-center gap-8 text-sm text-gray-400">
-          <li><span onClick={() => handleNavigate('hero')} className="hover:text-white transition-colors cursor-pointer">About</span></li>
-          <li><span onClick={() => handleNavigate('projects')} className="hover:text-white transition-colors cursor-pointer">Projects</span></li>
-          <li><span onClick={() => handleNavigate('skills')} className="hover:text-white transition-colors cursor-pointer">Skills</span></li>
-          <li><span onClick={() => handleNavigate('contact')} className="hover:text-white transition-colors cursor-pointer">Contact</span></li>
-        </ul>
-
-        <Link
-          to="https://drive.google.com/file/d/1tBm9eV-b0_5wTDLnC8z89lylPLmqVRTs/view"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-medium px-5 py-2 rounded-md transition-colors"
-          style={{ background: '#fff', color: '#000' }}
-        >
-          Resume
-        </Link>
-      </nav>
-
-      {/* ── Main Content ── */}
-      <main className="relative z-10 pt-32 pb-20 px-4 md:px-16 max-w-[1200px] mx-auto">
+    <main className="relative z-10 pt-32 pb-20 px-4 md:px-16 max-w-[1200px] mx-auto">
         {/* ── Page Header ── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -412,28 +374,22 @@ const AllProjects = () => {
           </div>
         )}
 
-        {/* ── Back Button ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-20 flex justify-center"
+      {/* ── Back Button ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="mt-20 flex justify-center"
+      >
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full text-[14px] font-bold text-white border border-white/25 bg-transparent transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-black hover:border-white hover:shadow-[0_4px_20px_rgba(255,255,255,0.3)]"
         >
-          <span
-            onClick={() => handleNavigate('projects')}
-            className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full text-[14px] font-bold text-white border border-white/25 bg-transparent transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-black hover:border-white hover:shadow-[0_4px_20px_rgba(255,255,255,0.3)] cursor-pointer"
-          >
-            <ArrowLeft size={18} />
-            Back to Home
-          </span>
-        </motion.div>
-      </main>
-
-      {/* ── Footer ── */}
-      <footer className="text-center py-8 text-gray-600 text-sm border-t border-white/5">
-        © 2026 Tapan. All rights reserved.
-      </footer>
-    </div>
+          <ArrowLeft size={18} />
+          Back to Home
+        </Link>
+      </motion.div>
+    </main>
   );
 };
 

@@ -14,6 +14,7 @@ const MobileCertificateCard = ({ cert }) => (
       <img
         src={cert.image}
         alt={cert.title}
+        loading="lazy"
         className="w-full h-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
@@ -41,13 +42,7 @@ const Certificates = () => {
     description: `${cert.issuer} • ${cert.date.toUpperCase()}`
   }));
 
-  // Preload all certificate images on mount so they display instantly when scrolled into view
-  useEffect(() => {
-    certificatesData.forEach((cert) => {
-      const img = new Image();
-      img.src = cert.image;
-    });
-  }, []);
+
 
   return (
     <motion.div 

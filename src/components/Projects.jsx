@@ -103,6 +103,7 @@ const ProjectCard = ({ project, index, total }) => {
             <img
               src={project.image}
               alt={project.title}
+              loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-105"
               style={{ objectPosition: 'left top' }}
             />
@@ -132,6 +133,7 @@ const MobileProjectCard = ({ project }) => (
       <img
         src={project.image}
         alt={project.title}
+        loading="lazy"
         className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-105"
         style={{ objectPosition: 'left top' }}
       />

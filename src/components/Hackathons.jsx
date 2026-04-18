@@ -38,6 +38,7 @@ const Lightbox = ({ src, onClose }) => {
         exit={{ scale: 0.9, opacity: 0 }}
         src={src}
         alt="Hackathon Event"
+        loading="lazy"
         className="max-w-[90vw] max-h-[80vh] md:max-w-[85vw] md:max-h-[85vh] object-contain rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.8)]"
         onClick={(e) => e.stopPropagation()}
       />
@@ -86,6 +87,7 @@ const DetailCard = ({ event, onClose, onImageClick }) => {
             <img
               src={event.certificate}
               alt={`${event.name} certificate`}
+              loading="lazy"
               className="w-full h-[200px] md:h-[280px] object-contain transition-transform duration-500 group-hover/cert:scale-105 drop-shadow-[0_0_20px_rgba(255,255,255,0.05)]"
             />
             {/* Hover overlay */}
@@ -158,6 +160,7 @@ const DetailCard = ({ event, onClose, onImageClick }) => {
                   <img
                     src={photo}
                     alt={`Memory ${i + 1}`}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover/photo:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover/photo:bg-black/30 transition-colors duration-300 flex items-center justify-center">
