@@ -89,7 +89,7 @@ const HeroCard = () => {
                   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="LinkedIn" className="w-[18px] h-[18px]" />
                 ),
                 label: 'LinkedIn',
-                link: 'https://www.linkedin.com/in/tapan-vachhani-691433394/',
+                link: 'https://www.linkedin.com/in/tapanvachhani/',
                 hoverClass: 'hover:border-[#0a66c2]/50 hover:bg-[#0a66c2]/10 hover:shadow-[0_0_15px_rgba(10,102,194,0.15)] hover:text-[#0a66c2]'
               },
               {

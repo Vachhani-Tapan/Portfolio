@@ -351,7 +351,7 @@ const Contact = () => {
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="LinkedIn" style={{ width: '40px', height: '40px' }} />
               <span style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, fontFamily: "'Inter', sans-serif" }}>Tapan Vachhani</span>
               <a
-                href="https://www.linkedin.com/in/tapan-vachhani-691433394/"
+                href="https://www.linkedin.com/in/tapanvachhani/"
                 target="_blank" rel="noopener noreferrer"
                 style={{
                   background: 'transparent', border: '1.5px solid rgba(255,255,255,0.25)',
@@ -491,10 +491,12 @@ const Contact = () => {
               <div style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem', fontFamily: "'Inter', sans-serif", marginTop: '2px' }}>@VachhaniTapan</div>
             </div>
             <a
-              href="https://x.com" target="_blank" rel="noopener noreferrer"
-              style={{ background: '#fff', borderRadius: '50px', padding: '7px 28px', color: '#000', fontSize: '12px', fontWeight: 700, fontFamily: "'Inter', sans-serif", textDecoration: 'none', transition: 'all 0.3s ease' }}
+              href="https://twitter.com/intent/follow?screen_name=VachhaniTapan" target="_blank" rel="noopener noreferrer"
+              style={{ background: '#fff', borderRadius: '50px', padding: '7px 28px', color: '#000', fontSize: '12px', fontWeight: 700, fontFamily: "'Inter', sans-serif", textDecoration: 'none', transition: 'all 0.3s ease', position: 'relative', zIndex: 2, cursor: 'pointer' }}
               onMouseEnter={(e) => { e.target.style.background = '#d4d4d4'; e.target.style.transform = 'scale(1.05)'; }}
               onMouseLeave={(e) => { e.target.style.background = '#fff'; e.target.style.transform = 'scale(1)'; }}
+              onClick={(e) => e.stopPropagation()}
+              aria-label="Follow Tapan Vachhani on X"
             >
               Follow
             </a>
