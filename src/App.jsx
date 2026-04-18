@@ -106,7 +106,7 @@ function Navbar() {
       </ul>
 
       <Link
-        to="https://drive.google.com/file/d/1tBm9eV-b0_5wTDLnC8z89lylPLmqVRTs/view"
+        to="https://drive.google.com/file/d/1CsWIDnUxHA5ujMmmrh3b8-0_KC45N6-w/view?usp=sharing"
         target="_blank"
         rel="noopener noreferrer"
         className="text-sm font-bold px-5 py-2 rounded-md transition-all duration-300 hover:scale-105"
