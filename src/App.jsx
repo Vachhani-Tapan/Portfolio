@@ -13,7 +13,8 @@ const SEO = () => {
   const location = useLocation();
   const fullName = "Vachhani Tapan";
   const homeTagline = "MERN Stack Full Stack Developer - Portfolio";
-  const siteUrl = "https://portfolio-tapan.vercel.app"; // Replace with your actual domain
+  const siteUrl = "https://www.tapanvachhani.me"; 
+  const profileImage = `${siteUrl}/profile-image.jpg`;
 
   // Metadata Map
   const meta = {
@@ -56,20 +57,21 @@ const SEO = () => {
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={currentMeta.description} />
+      <meta name="thumbnail" content={profileImage} />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
       <meta property="og:url" content={`${siteUrl}${location.pathname}`} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={currentMeta.description} />
-      <meta property="og:image" content={`${siteUrl}/og-image.jpg`} />
+      <meta property="og:image" content={profileImage} />
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={`${siteUrl}${location.pathname}`} />
       <meta property="twitter:title" content={fullTitle} />
       <meta property="twitter:description" content={currentMeta.description} />
-      <meta property="twitter:image" content={`${siteUrl}/og-image.jpg`} />
+      <meta property="twitter:image" content={profileImage} />
     </Helmet>
   );
 };
