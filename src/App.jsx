@@ -144,8 +144,7 @@ function MainLayout({ children, isLoading, handleLoadingComplete }) {
       >
         {children}
 
-        <footer className="text-center py-12 mt-12 text-gray-600 text-sm border-t border-white/5">
-          © 2026 Vachhani Tapan. All rights reserved.
+        <footer className="text-center py-2 mt-4 text-gray-600 text-xs border-t border-white/5 opacity-30">
         </footer>
       </div>
     </div>
@@ -181,11 +180,7 @@ function HomePage() {
         </section>
       </React.Suspense>
       
-      <div className="py-12 text-center">
-        <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed text-sm">
-          Crafting premium digital experiences through purposeful design and robust code.
-        </p>
-      </div>
+
     </main>
   );
 }

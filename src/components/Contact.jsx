@@ -237,7 +237,7 @@ const Contact = () => {
   ];
 
   return (
-    <div ref={containerRef} className="w-full flex flex-col pb-12 relative max-w-[1200px] mx-auto" style={{ marginTop: '80px' }}>
+    <div ref={containerRef} className="w-full flex flex-col pb-4 relative max-w-[1200px] mx-auto" style={{ marginTop: '80px' }}>
       <style>{`
         @media (max-width: 768px) {
           .mobile-bento-grid {
