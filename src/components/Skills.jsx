@@ -56,11 +56,73 @@ const GLOBE_SIZE = 520;
 const Skills = () => {
   const globeRef = useRef(null);
   const globeMatRef = useRef(null);
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = React.useState(false);
+  const [isStyled, setIsStyled] = React.useState(false);
 
   const reqRef = useRef(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const applyCustomStyles = useCallback(() => {
     if (!globeRef.current) return;
+    
+    try {
+      const scene = globeRef.current.scene();
+      let sphereMesh = null;
+      
+      scene.traverse((obj) => {
+        if (obj.isMesh && obj.geometry && (obj.geometry.type === 'SphereGeometry' || obj.geometry.type === 'BufferGeometry')) {
+          // If it's the main globe surface
+          if (!obj.material.wireframe) {
+            obj.material = new THREE.MeshPhongMaterial({
+              color: new THREE.Color('#111111'),
+              emissive: new THREE.Color('#0a0a0a'),
+              shininess: 5,
+              transparent: true,
+              opacity: 0.92,
+            });
+            globeMatRef.current = obj.material;
+            sphereMesh = obj;
+          }
+        }
+      });
+
+      if (sphereMesh) {
+        const wireGeo = sphereMesh.geometry.clone();
+        const wireMat = new THREE.MeshBasicMaterial({
+          color: new THREE.Color('#222222'),
+          wireframe: true,
+          transparent: true,
+          opacity: 0.15,
+        });
+        const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+        wireMesh.scale.copy(sphereMesh.scale).multiplyScalar(1.002);
+        sphereMesh.parent.add(wireMesh);
+        
+        // Confirm styling is done to trigger fade-in
+        setIsStyled(true);
+      }
+    } catch (e) {
+      console.log('Globe styling error:', e);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !globeRef.current) return;
 
     // Auto-rotate slowly
     const controls = globeRef.current.controls();
@@ -73,55 +135,12 @@ const Skills = () => {
 
     globeRef.current.pointOfView({ lat: 15, lng: 0, altitude: 2.2 });
 
-    // Make the globe fully BLACK — override the globe material
-    const globeObj = globeRef.current;
-    // Wait for globe to initialize then override material
-    setTimeout(() => {
-      try {
-        const scene = globeObj.scene();
-        scene.traverse((obj) => {
-          if (obj.isMesh && obj.geometry && obj.geometry.type === 'SphereGeometry') {
-            // Replace with dark material — black globe with subtle grid lines
-            obj.material = new THREE.MeshPhongMaterial({
-              color: new THREE.Color('#111111'),
-              emissive: new THREE.Color('#0a0a0a'),
-              shininess: 5,
-              transparent: true,
-              opacity: 0.92,
-              wireframe: false,
-            });
-            globeMatRef.current = obj.material;
-          }
-        });
+    // Apply styles immediately if possible, or wait for next tick
+    applyCustomStyles();
 
-        // Add a subtle wireframe overlay for the mesh look
-        const globeMesh = scene.children.find(c =>
-          c.type === 'Group' || c.type === 'Object3D'
-        );
-        if (globeMesh) {
-          globeMesh.traverse((obj) => {
-            if (obj.isMesh && obj.geometry && obj.geometry.type === 'SphereGeometry') {
-              const wireGeo = obj.geometry.clone();
-              const wireMat = new THREE.MeshBasicMaterial({
-                color: new THREE.Color('#222222'),
-                wireframe: true,
-                transparent: true,
-                opacity: 0.15,
-              });
-              const wireMesh = new THREE.Mesh(wireGeo, wireMat);
-              wireMesh.scale.copy(obj.scale).multiplyScalar(1.002);
-              obj.parent.add(wireMesh);
-            }
-          });
-        }
-      } catch (e) {
-        console.log('Globe material override skipped:', e);
-      }
-    }, 1000);
-
-    // Visibility update loop
+    // Visibility update loop - only runs when isVisible is true
     const updateVisibility = () => {
-      if (globeRef.current) {
+      if (globeRef.current && isVisible) {
         const camera = globeRef.current.camera();
         const wrappers = document.querySelectorAll('.skill-logo-wrapper');
         
@@ -145,8 +164,8 @@ const Skills = () => {
             }
           }
         });
+        reqRef.current = requestAnimationFrame(updateVisibility);
       }
-      reqRef.current = requestAnimationFrame(updateVisibility);
     };
 
     reqRef.current = requestAnimationFrame(updateVisibility);
@@ -156,7 +175,7 @@ const Skills = () => {
         cancelAnimationFrame(reqRef.current);
       }
     };
-  }, []);
+  }, [isVisible, applyCustomStyles]);
 
   const frontendSkills = ["HTML5", "CSS3", "JavaScript", "React.js", "Tailwind CSS", "Framer Motion"];
   const backendSkills = ["Node.js", "Express", "MongoDB", "Redis", "REST API"];
@@ -258,7 +277,7 @@ const Skills = () => {
   }, []);
 
   return (
-    <div className="w-full relative min-h-[600px] flex flex-col md:flex-row items-center border border-white/10 rounded-[40px] bg-[#0E0E0E] overflow-hidden p-8 md:p-12 z-0">
+    <div className="w-full relative min-h-[600px] flex flex-col md:flex-row items-center border border-white/10 rounded-[40px] bg-[#0E0E0E] overflow-hidden p-8 md:p-12 z-0" ref={containerRef}>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0,_#000_100%)] opacity-20 pointer-events-none" />
 
       {/* ── Left: Skill pills ── */}
@@ -288,7 +307,12 @@ const Skills = () => {
       {/* ── Right: BLACK globe with skill logos ── */}
       <div
         className="w-full md:w-1/2 flex justify-center items-center mt-12 md:mt-0 z-10"
-        style={{ height: `${GLOBE_SIZE}px`, minHeight: `${GLOBE_SIZE}px` }}
+        style={{ 
+          height: `${GLOBE_SIZE}px`, 
+          minHeight: `${GLOBE_SIZE}px`,
+          opacity: isStyled ? 1 : 0,
+          transition: 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
       >
         <div style={{ width: `${GLOBE_SIZE}px`, height: `${GLOBE_SIZE}px`, flexShrink: 0 }}>
           <Globe
@@ -305,6 +329,7 @@ const Skills = () => {
             htmlLng="lng"
             htmlAltitude={0.12}
             htmlElement={labelRenderer}
+            onGlobeReady={applyCustomStyles}
           />
         </div>
       </div>

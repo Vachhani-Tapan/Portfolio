@@ -159,22 +159,37 @@ function HomePage() {
         <HeroCard />
       </section>
       
-      <React.Suspense fallback={<div className="h-40 flex items-center justify-center text-gray-700">Loading experience...</div>}>
+      <React.Suspense fallback={<div className="h-40 flex items-center justify-center text-gray-800/20">Loading...</div>}>
         <section id="skills">
           <Skills />
         </section>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div className="h-40" />}>
         <section id="projects">
           <Projects />
         </section>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div className="h-40" />}>
         <section id="certificates">
           <Certificates />
         </section>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div className="h-40" />}>
         <section id="hackathons">
           <Hackathons />
         </section>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div className="h-40" />}>
         <section id="academics">
           <Academics />
         </section>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div className="h-40" />}>
         <section id="contact">
           <Contact />
         </section>

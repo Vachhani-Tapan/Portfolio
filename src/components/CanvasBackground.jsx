@@ -91,28 +91,31 @@ const CanvasBackground = () => {
 
         const init = () => {
             particles = [];
-            const numberOfParticles = Math.floor((canvas.width * canvas.height) / 12000); // density
+            // Reduced density to lower TBT: from 12000 to 25000
+            const numberOfParticles = Math.floor((canvas.width * canvas.height) / 25000); 
             for (let i = 0; i < numberOfParticles; i++) {
-                let size = Math.random() * 2 + 1;
+                let size = Math.random() * 1.5 + 0.5;
                 let x = Math.random() * (canvas.width - size * 2) + size;
                 let y = Math.random() * (canvas.height - size * 2) + size;
-                let dx = (Math.random() - 0.5) * 1.5;
-                let dy = (Math.random() - 0.5) * 1.5;
+                let dx = (Math.random() - 0.5) * 0.8;
+                let dy = (Math.random() - 0.5) * 0.8;
                 particles.push(new Particle(x, y, dx, dy, size));
             }
         };
 
         const connect = () => {
+            // Reduced connection distance from 18000 to 10000 for performance
+            const maxDistance = 10000;
             for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
+                for (let b = a + 1; b < particles.length; b++) {
                     let dx = particles[a].x - particles[b].x;
                     let dy = particles[a].y - particles[b].y;
                     let distance = (dx * dx) + (dy * dy);
 
-                    if (distance < 18000) {
-                        let opacity = 1 - (distance / 18000);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
-                        ctx.lineWidth = 1;
+                    if (distance < maxDistance) {
+                        let opacity = 1 - (distance / maxDistance);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                        ctx.lineWidth = 0.8;
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
