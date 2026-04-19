@@ -201,7 +201,7 @@ const AllProjects = () => {
               >
                 {/* ── Image ── */}
                 <a
-                  href={project.liveLink || project.figmaLink}
+                  href={project.liveLink && project.liveLink !== '#' ? project.liveLink : project.figmaLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="relative w-full h-[220px] overflow-hidden block border-b border-[#2a2a2a]"
