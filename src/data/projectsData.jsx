@@ -4,9 +4,9 @@ import { Cloud, MapPin } from 'lucide-react';
 const projectsData = [
   {
     title: 'FinWise AI',
-    description: 'FinWise AI — an AI-powered personal finance platform that centralizes expenses, investments, goals, and financial planning in one place.',
+    description: 'FinWise AI — an AI-powered personal finance platform that centralizes expenses, investments, goals in one place.',
     points: [
-      'Real-time expense tracking with AI-driven categorization and budget alerts',
+      'Expense tracking with AI-driven categorization and budget alerts',
       'Predictive investment insights using historical market data analysis',
       'Automated financial goal setting with personalized savings recommendations',
     ],

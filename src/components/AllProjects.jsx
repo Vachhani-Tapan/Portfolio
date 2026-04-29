@@ -112,7 +112,7 @@ const AllProjects = () => {
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500 flex items-center justify-center">
                   <span className="text-white text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-white/15 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
-                    View Live ↗
+                    View Live Demo ↗
                   </span>
                 </div>
               </a>
