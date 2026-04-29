@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { SquareArrowOutUpRight, Eye } from "lucide-react";
 
 function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
@@ -63,6 +63,7 @@ export type CardStackProps<T extends CardStackItem> = {
 
   /** Hooks */
   onChangeIndex?: (index: number, item: T) => void;
+  onImageClick?: (src: string) => void;
 
   /** Custom renderer (optional) */
   renderCard?: (item: T, state: { active: boolean }) => React.ReactNode;
@@ -114,6 +115,7 @@ export function CardStack<T extends CardStackItem>({
   className,
 
   onChangeIndex,
+  onImageClick,
   renderCard,
 }: CardStackProps<T>) {
   const reduceMotion = useReducedMotion();
@@ -326,7 +328,11 @@ export function CardStack<T extends CardStackItem>({
                     {renderCard ? (
                       renderCard(item, { active: isActive })
                     ) : (
-                      <DefaultFanCard item={item} active={isActive} />
+                      <DefaultFanCard 
+                        item={item} 
+                        active={isActive} 
+                        onImageClick={onImageClick}
+                      />
                     )}
                   </div>
                 </motion.div>
@@ -374,19 +380,42 @@ export function CardStack<T extends CardStackItem>({
   );
 }
 
-function DefaultFanCard({ item }: { item: CardStackItem; active: boolean }) {
+function DefaultFanCard({ 
+  item, 
+  onImageClick 
+}: { 
+  item: CardStackItem; 
+  active: boolean;
+  onImageClick?: (src: string) => void;
+}) {
   return (
-    <div className="relative h-full w-full bg-black">
+    <div className="relative h-full w-full bg-black group">
       {/* image - modified to object-contain so we don't cut off certificates */}
-      <div className="absolute inset-x-0 inset-y-4 px-4 pb-20 pt-4">
+      <div 
+        className={cn(
+          "absolute inset-x-0 inset-y-4 px-4 pb-20 pt-4 cursor-pointer overflow-hidden",
+          !onImageClick && "cursor-default"
+        )}
+        onClick={() => item.imageSrc && onImageClick?.(item.imageSrc)}
+      >
         {item.imageSrc ? (
-          <img
-            src={item.imageSrc}
-            alt={item.title}
-            className="h-full w-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
-            draggable={false}
-            loading="lazy"
-          />
+          <>
+            <img
+              src={item.imageSrc}
+              alt={item.title}
+              className="h-full w-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-transform duration-500 group-hover:scale-105"
+              draggable={false}
+              loading="lazy"
+            />
+            {/* Hover overlay with Eye Icon */}
+            {onImageClick && (
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500 flex items-center justify-center">
+                <div className="bg-white/10 backdrop-blur-md rounded-full p-4 border border-white/20 transform scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 shadow-2xl">
+                  <Eye size={24} className="text-white" />
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-zinc-900 text-sm text-gray-400">
             No image

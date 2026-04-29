@@ -53,12 +53,12 @@ export const hackathonData = [
   },
   {
     id: 5,
-    name: "IIIT SURAT",
+    name: "SVNIT SURAT",
     tagline: "DOTSLASH 9.0",
-    venue: "IIIT SURAT",
+    venue: "SVNIT SURAT",
     date: "Feb 2026",
     description:
-      "Competed in the DOTSLASH 9.0 hackathon at IIIT Surat, engaging in intensive problem-solving and rapid prototyping to build and deploy innovative technical solutions.",
+      "Competed in the DOTSLASH 9.0 hackathon at SVNIT Surat, engaging in intensive problem-solving and rapid prototyping to build and deploy innovative technical solutions.",
     certificate:
       "https://res.cloudinary.com/dgcmeb8ec/image/upload/v1777444542/DotSlash_SVNIT_skgafn.jpg",
     photos: [

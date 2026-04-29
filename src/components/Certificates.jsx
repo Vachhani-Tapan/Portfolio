@@ -1,22 +1,72 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowRight, Eye, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { certificatesData } from '../data/certificatesData';
 import { CardStack } from './ui/card-stack';
 
-const MobileCertificateCard = ({ cert }) => (
+/* ─── Lightbox (full-screen image viewer) ─── */
+const Lightbox = ({ src, onClose }) => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  return createPortal(
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md cursor-pointer"
+      onClick={onClose}
+    >
+      <button
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        className="absolute top-6 right-6 md:top-8 md:right-8 bg-white/10 hover:bg-white/20 p-2.5 rounded-full text-white border border-white/20 transition-all z-[10000] shadow-xl"
+      >
+        <X size={24} />
+      </button>
+      <motion.img
+        initial={{ scale: 0.9, opacity: 0.5 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        src={src}
+        alt="Certificate"
+        loading="lazy"
+        className="max-w-[90vw] max-h-[80vh] md:max-w-[85vw] md:max-h-[85vh] object-contain rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.8)]"
+        onClick={(e) => e.stopPropagation()}
+      />
+    </motion.div>,
+    document.body
+  );
+};
+
+const MobileCertificateCard = ({ cert, onImageClick }) => (
   <div
-    className="w-full h-full flex-shrink-0 rounded-2xl overflow-hidden border border-white/10 bg-[#111] shadow-2xl relative flex flex-col"
+    className="w-full h-full flex-shrink-0 rounded-2xl overflow-hidden border border-white/10 bg-[#111] shadow-2xl relative flex flex-col group"
   >
     {/* image container: STRICT fixed height so portrait certificates cannot break the layout */}
-    <div className="relative w-full h-[200px] bg-black p-4 flex-shrink-0 flex items-center justify-center">
+    <div 
+      className="relative w-full h-[200px] bg-black p-4 flex-shrink-0 flex items-center justify-center cursor-pointer overflow-hidden"
+      onClick={() => onImageClick(cert.image)}
+    >
       <img
         src={cert.image}
         alt={cert.title}
         loading="lazy"
-        className="w-full h-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+        className="w-full h-full object-contain pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-transform duration-500 group-hover:scale-110"
       />
+
+      {/* Hover overlay with Eye Icon */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center">
+        <div className="bg-white/10 backdrop-blur-md rounded-full p-4 border border-white/20 transform scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 shadow-2xl">
+          <Eye size={20} className="text-white" />
+        </div>
+      </div>
+
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
     </div>
 
@@ -37,6 +87,8 @@ const MobileCertificateCard = ({ cert }) => (
 );
 
 const Certificates = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   // Map our certificatesData to the CardStackItem interface expected by the new CardStack
   const certificateCards = certificatesData.slice(0, 5).map((cert) => ({
     id: cert.id,
@@ -89,7 +141,10 @@ const Certificates = () => {
       >
         {certificatesData.slice(0, 5).map((cert) => (
           <div key={cert.id} className="w-[85%] sm:w-[60%] flex-shrink-0 snap-center">
-            <MobileCertificateCard cert={cert} />
+            <MobileCertificateCard 
+              cert={cert} 
+              onImageClick={(src) => setSelectedImage(src)}
+            />
           </div>
         ))}
         {/* Adds visual padding to the end of the scroll */}
@@ -111,6 +166,7 @@ const Certificates = () => {
           intervalMs={1500}
           showDots={true}
           loop={true}
+          onImageClick={(src) => setSelectedImage(src)}
         />
       </motion.div>
 
@@ -124,6 +180,16 @@ const Certificates = () => {
           <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <Lightbox
+            src={selectedImage}
+            onClose={() => setSelectedImage(null)}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
