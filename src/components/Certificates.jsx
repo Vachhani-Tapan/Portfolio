@@ -6,7 +6,7 @@ import { certificatesData } from '../data/certificatesData';
 import { CardStack } from './ui/card-stack';
 
 const MobileCertificateCard = ({ cert }) => (
-  <div 
+  <div
     className="w-full h-full flex-shrink-0 rounded-2xl overflow-hidden border border-white/10 bg-[#111] shadow-2xl relative flex flex-col"
   >
     {/* image container: STRICT fixed height so portrait certificates cannot break the layout */}
@@ -22,7 +22,10 @@ const MobileCertificateCard = ({ cert }) => (
 
     {/* content container: flex-1 ensures it fills any remaining vertical space if the sibling card is taller */}
     <div className="flex flex-col justify-between p-5 border-t border-white/5 flex-1 relative z-10 bg-[#111]">
-      <div className="text-lg font-bold text-white tracking-wide line-clamp-3">
+      <div 
+        className="text-base font-light text-white tracking-wide line-clamp-3"
+        style={{ fontFamily: "'Outfit', sans-serif" }}
+      >
         {cert.title}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400 font-medium tracking-wide">
@@ -45,7 +48,7 @@ const Certificates = () => {
 
 
   return (
-    <motion.div 
+    <motion.div
       className="w-full flex flex-col items-center pb-0 relative max-w-[1400px] mx-auto px-4 md:px-12 pt-20 md:pt-28"
       initial="hidden"
       whileInView="visible"
@@ -64,7 +67,7 @@ const Certificates = () => {
         }}
         className="w-full text-left mb-2 md:mb-4"
       >
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
+        <h2 className="text-2xl md:text-4xl font-light tracking-tight text-white mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
             Certifications
           </span>
@@ -76,7 +79,7 @@ const Certificates = () => {
       </motion.div>
 
       {/* Mobile Layout: Horizontal Row / Scrollable List to fulfill "aligned in row normally" */}
-      <motion.div 
+      <motion.div
         variants={{
           hidden: { opacity: 0, y: 30 },
           visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: "easeOut" } }
@@ -101,8 +104,8 @@ const Certificates = () => {
         }}
         className="w-full hidden md:flex justify-center -mt-6 mb-4 relative z-10"
       >
-        <CardStack 
-          items={certificateCards} 
+        <CardStack
+          items={certificateCards}
           initialIndex={0}
           autoAdvance={true}
           intervalMs={1500}

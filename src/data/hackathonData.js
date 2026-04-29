@@ -60,7 +60,7 @@ export const hackathonData = [
     description:
       "Competed in the DOTSLASH 9.0 hackathon at IIIT Surat, engaging in intensive problem-solving and rapid prototyping to build and deploy innovative technical solutions.",
     certificate:
-      "https://res.cloudinary.com/dgcmeb8ec/image/upload/q_auto/f_auto/v1775985705/iiit_photo1_pznpy0.jpg",
+      "https://res.cloudinary.com/dgcmeb8ec/image/upload/v1777444542/DotSlash_SVNIT_skgafn.jpg",
     photos: [
       "https://res.cloudinary.com/dgcmeb8ec/image/upload/q_auto/f_auto/v1775985705/iiit_photo1_pznpy0.jpg",
       "https://res.cloudinary.com/dgcmeb8ec/image/upload/q_auto/f_auto/v1775985705/iiit_photo2_zagltr.jpg",

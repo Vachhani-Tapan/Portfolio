@@ -33,8 +33,8 @@ const CertificateCard = ({ cert, index }) => (
     {/* ── Content ── */}
     <div className="p-6 flex flex-col flex-1 border-t border-white/5 relative z-10 bg-[#111]">
       <h3
-        className="text-[1.4rem] md:text-[1.6rem] text-[#f2f2f2] leading-tight font-medium tracking-tight mb-2"
-        style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}
+        className="text-[1rem] md:text-[1.2rem] text-[#f2f2f2] leading-tight font-light tracking-tight mb-2"
+        style={{ fontFamily: "'Outfit', sans-serif" }}
       >
         {cert.title}
       </h3>
@@ -56,28 +56,28 @@ const AllCertificates = () => {
 
   return (
     <main className="relative z-10 pt-32 pb-20 px-4 md:px-16 max-w-[1200px] mx-auto">
-        {/* ── Page Header ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-          className="mb-16"
-        >
-          <p className="text-gray-500 text-xs font-semibold tracking-[0.2em] uppercase mb-2">
-            Professional Qualifications
-          </p>
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-4">All Certificates</h2>
-          <p className="text-gray-400 text-base max-w-xl">
-            A complete log of my academic achievements, bootcamp graduations, and upskilling certifications.
-          </p>
-        </motion.div>
+      {/* ── Page Header ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+        className="mb-16"
+      >
+        <p className="text-gray-500 text-xs font-semibold tracking-[0.2em] uppercase mb-2">
+          Professional Qualifications
+        </p>
+        <h2 className="text-3xl md:text-5xl font-light text-white mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>All Certificates</h2>
+        <p className="text-gray-400 text-base max-w-xl">
+          A complete log of my academic achievements, bootcamp graduations, and upskilling certifications.
+        </p>
+      </motion.div>
 
-        {/* ── Certificates Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {certificatesData.map((cert, index) => (
-            <CertificateCard key={cert.id} cert={cert} index={index} />
-          ))}
-        </div>
+      {/* ── Certificates Grid ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {certificatesData.map((cert, index) => (
+          <CertificateCard key={cert.id} cert={cert} index={index} />
+        ))}
+      </div>
 
       {/* ── Back Button ── */}
       <motion.div
