@@ -405,11 +405,7 @@ const Contact = () => {
               padding: '24px 12px', position: 'relative', overflow: 'hidden', minHeight: '220px',
             }}
           >
-            <div style={{ position: 'absolute', bottom: '16px', right: '16px' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </div>
+
             <span className="mobile-horizontal-text" style={{
               writingMode: 'vertical-rl', textOrientation: 'mixed',
               fontFamily: "'Inter', sans-serif", fontSize: '1.5rem', fontWeight: 900,
@@ -617,7 +613,7 @@ const Contact = () => {
                 </svg>
                 <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>Based in India</span>
               </div>
-              <span style={{ color: 'rgba(255,255,255,0.2)', marginTop: '20px'}}>•</span>
+
               <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>UTC+5:30</span>
             </div>
           </BentoTiltCard>
